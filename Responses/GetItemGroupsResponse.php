@@ -3,104 +3,106 @@
  * Created by PhpStorm.
  * User: AbdullahFaqeir
  * Date: 8/5/18
- * Time: 3:02 PM
+ * Time: 3:02 PM.
  */
+class GetItemGroupsResponse extends BaseResponse
+{
+    /**
+     * @var ItemGroup[]
+     */
+    private $ItemGroups;
 
-class GetItemGroupsResponse extends BaseResponse {
+    /**
+     * GetItemGroupsResponse constructor.
+     *
+     * @param $Result
+     * @param $ErrorDesc
+     * @param $ItemGroups
+     */
+    public function __construct($Result, $ErrorDesc, $ItemGroups)
+    {
+        parent::__construct($Result, $ErrorDesc);
+        $this->ItemGroups = $ItemGroups;
+    }
 
-	/**
-	 * @var ItemGroup[]
-	 */
-	private $ItemGroups;
+    /**
+     * @return ItemGroup[]
+     */
+    public function getItemGroups()
+    {
+        return $this->ItemGroups;
+    }
 
-	/**
-	 * GetItemGroupsResponse constructor.
-	 *
-	 * @param $Result
-	 * @param $ErrorDesc
-	 * @param $ItemGroups
-	 */
-	public function __construct( $Result, $ErrorDesc, $ItemGroups ) {
-		parent::__construct( $Result, $ErrorDesc );
-		$this->ItemGroups = $ItemGroups;
-	}
+    /**
+     * Parse Response XML.
+     *
+     * @param $xml
+     *
+     * @return self
+     */
+    public static function parse($xml)
+    {
+        $xmlData = simplexml_load_string($xml);
 
-	/**
-	 * @return ItemGroup[]
-	 */
-	public function getItemGroups() {
-		return $this->ItemGroups;
-	}
+        $Result = isset($xmlData->Result) ? (bool) $xmlData->Result : false;
+        $ErrorDesc = isset($xmlData->ErrorDesc) ? (string) $xmlData->ErrorDesc : '';
 
-	/**
-	 * Parse Response XML
-	 *
-	 * @param $xml
-	 *
-	 * @return self
-	 */
-	public static function parse( $xml ) {
-		$xmlData = simplexml_load_string( $xml );
+        $ItemGroups = [];
 
-		$Result    = isset( $xmlData->Result ) ? (bool) $xmlData->Result : false;
-		$ErrorDesc = isset( $xmlData->ErrorDesc ) ? (string) $xmlData->ErrorDesc : '';
+        if (isset($xmlData->ItemGroups, $xmlData->ItemGroups->ItemGroup) && !empty($xmlData->ItemGroups->ItemGroup)) {
+            foreach ($xmlData->ItemGroups->ItemGroup as $ItemGroup) {
+                $ItemGroupID = isset($ItemGroup->ItemGroupID) ? (int) $ItemGroup->ItemGroupID : '';
+                $ItemGroupName = isset($ItemGroup->ItemGroupName) ? (string) $ItemGroup->ItemGroupName : '';
+                $ItemGroups[] = new ItemGroup($ItemGroupID, $ItemGroupName);
+            }
+        }
 
-		$ItemGroups = array();
-
-		if ( isset( $xmlData->ItemGroups, $xmlData->ItemGroups->ItemGroup ) && ! empty( $xmlData->ItemGroups->ItemGroup ) ) {
-			foreach ( $xmlData->ItemGroups->ItemGroup as $ItemGroup ) {
-				$ItemGroupID   = isset( $ItemGroup->ItemGroupID ) ? (int) $ItemGroup->ItemGroupID : '';
-				$ItemGroupName = isset( $ItemGroup->ItemGroupName ) ? (string) $ItemGroup->ItemGroupName : '';
-				$ItemGroups[]  = new ItemGroup( $ItemGroupID, $ItemGroupName );
-			}
-		}
-
-		return new self( $Result, $ErrorDesc, $ItemGroups );
-	}
+        return new self($Result, $ErrorDesc, $ItemGroups);
+    }
 }
 
 /**
- * Class ItemGroup
+ * Class ItemGroup.
  *
  * @author Abdullah Al-Faqeir
- * @package Devloops_Epoints
  */
-class ItemGroup {
+class ItemGroup
+{
+    /**
+     * @var int
+     */
+    private $ItemGroupID;
 
-	/**
-	 * @var int
-	 */
-	private $ItemGroupID;
+    /**
+     * @var string
+     */
+    private $ItemGroupName;
 
-	/**
-	 * @var string
-	 */
-	private $ItemGroupName;
+    /**
+     * ItemGroup constructor.
+     *
+     * @param $ItemGroupID
+     * @param $ItemGroupName
+     */
+    public function __construct($ItemGroupID, $ItemGroupName)
+    {
+        $this->ItemGroupID = $ItemGroupID;
+        $this->ItemGroupName = $ItemGroupName;
+    }
 
-	/**
-	 * ItemGroup constructor.
-	 *
-	 * @param $ItemGroupID
-	 * @param $ItemGroupName
-	 */
-	public function __construct( $ItemGroupID, $ItemGroupName ) {
-		$this->ItemGroupID   = $ItemGroupID;
-		$this->ItemGroupName = $ItemGroupName;
-	}
+    /**
+     * @return mixed
+     */
+    public function getItemGroupID()
+    {
+        return $this->ItemGroupID;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getItemGroupID() {
-		return $this->ItemGroupID;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getItemGroupName() {
-		return $this->ItemGroupName;
-	}
-
-
+    /**
+     * @return mixed
+     */
+    public function getItemGroupName()
+    {
+        return $this->ItemGroupName;
+    }
 }
