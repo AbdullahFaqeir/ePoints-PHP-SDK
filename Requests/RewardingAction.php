@@ -3,84 +3,84 @@
  * Created by PhpStorm.
  * User: AbdullahFaqeir
  * Date: 7/20/18
- * Time: 9:21 PM
+ * Time: 9:21 PM.
  */
 
 /**
- * Class RewardingAction
+ * Class RewardingAction.
  *
  * @author Abdullah Al-Faqeir <abdullah@devloops.net>
- * @package Devloops_Epoints
  */
-class RewardingAction {
+class RewardingAction
+{
+    /**
+     * @var string
+     */
+    private $Amount;
 
-	/**
-	 * @var string
-	 */
-	private $Amount;
+    /**
+     * @var string
+     */
+    private $CardholderId;
 
-	/**
-	 * @var string
-	 */
-	private $CardholderId;
+    /**
+     * @var int
+     */
+    private $CountryID;
 
-	/**
-	 * @var int
-	 */
-	private $CountryID;
+    /**
+     * @var string
+     */
+    private $InvoiceNo;
 
-	/**
-	 * @var string
-	 */
-	private $InvoiceNo;
+    /**
+     * @var int
+     */
+    private $LastTransactionID = 0;
 
-	/**
-	 * @var int
-	 */
-	private $LastTransactionID = 0;
+    /**
+     * @var string
+     */
+    private $StationID;
 
-	/**
-	 * @var string
-	 */
-	private $StationID;
+    /**
+     * @var string
+     */
+    private $Token;
 
-	/**
-	 * @var string
-	 */
-	private $Token;
+    /**
+     * RewardingAction constructor.
+     *
+     * @param $Amount
+     * @param $CardholderId
+     * @param $CountryID
+     * @param $InvoiceNo
+     * @param $StationID
+     * @param $Token
+     */
+    public function __construct($Amount, $CardholderId, $CountryID, $InvoiceNo, $StationID, $Token)
+    {
+        $this->Amount = $Amount;
+        $this->CardholderId = $CardholderId;
+        $this->CountryID = (int) $CountryID;
+        $this->InvoiceNo = $InvoiceNo;
+        $this->StationID = $StationID;
+        $this->Token = $Token;
+    }
 
-	/**
-	 * RewardingAction constructor.
-	 *
-	 * @param $Amount
-	 * @param $CardholderId
-	 * @param $CountryID
-	 * @param $InvoiceNo
-	 * @param $StationID
-	 * @param $Token
-	 */
-	public function __construct( $Amount, $CardholderId, $CountryID, $InvoiceNo, $StationID, $Token ) {
-		$this->Amount       = $Amount;
-		$this->CardholderId = $CardholderId;
-		$this->CountryID    = (int) $CountryID;
-		$this->InvoiceNo    = $InvoiceNo;
-		$this->StationID    = $StationID;
-		$this->Token        = $Token;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function toJson() {
-		return array(
-			'Amount'            => $this->Amount,
-			'CardholderId'      => $this->CardholderId,
-			'CountryID'         => $this->CountryID,
-			'InvoiceNo'         => $this->InvoiceNo,
-			'LastTransactionID' => $this->LastTransactionID,
-			'StationID'         => $this->StationID,
-			'Token'             => $this->Token,
-		);
-	}
-
+    /**
+     * @return array
+     */
+    public function toJson()
+    {
+        return [
+            'Amount'            => $this->Amount,
+            'CardholderId'      => $this->CardholderId,
+            'CountryID'         => $this->CountryID,
+            'InvoiceNo'         => $this->InvoiceNo,
+            'LastTransactionID' => $this->LastTransactionID,
+            'StationID'         => $this->StationID,
+            'Token'             => $this->Token,
+        ];
+    }
 }
